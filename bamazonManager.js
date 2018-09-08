@@ -77,11 +77,15 @@ function viewLow() {
         for (var i = 0; i < res.length; i++) {
             var inventory = res[i].stock_quantity;
             var product = res[i].product_name;
-
+            var counter = 0;
             if (inventory < 5) {
                 console.log("You need to order more " + product +". You only have " + inventory + " units left in stock");
+                counter ++;
             }
 
+          }
+          if (counter === 0){
+            console.log("\nThere is no need to order anything at the current time. \n")
           }
           runSearch();
     });
@@ -131,7 +135,6 @@ function addInventory() {
     });
 }
 
-
 function updateProduct(itemID, newQuant) {
     var query = connection.query(
       "UPDATE products SET ? WHERE ?",
@@ -150,3 +153,73 @@ function updateProduct(itemID, newQuant) {
       }
     );
   }
+
+function addProduct() {
+    inquirer
+    .prompt([
+      {
+        name: "name",
+        type: "input",
+        message: "Please enter the Product Name: ",
+        // validate: function(value) {
+        //   if (isNaN(value) === false) {
+        //     return true;
+        //   }
+        //   return false;
+        // }
+      },
+      {
+        name: "department",
+        type: "input",
+        message: "Please enter the Department Name: ",
+        // validate: function(value) {
+        //   if (isNaN(value) === false) {
+        //     return true;
+        //   }
+        //   return false;
+        // }
+      },
+      {
+        name: "price",
+        type: "input",
+        message: "Please enter the Price of the Product: ",
+        // validate: function(value) {
+        //   if (isNaN(value) === false) {
+        //     return true;
+        //   }
+        //   return false;
+        // }
+      },
+      {
+        name: "quantity",
+        type: "input",
+        message: "Please enter the Inventory Quantity: ",
+        // validate: function(value) {
+        //   if (isNaN(value) === false) {
+        //     return true;
+        //   }
+        //   return false;
+        // }
+      }
+    ])
+    .then(function(answer) {
+    var name = answer.name;
+    var department = answer.department;
+    var price = answer.price;
+    var quantity = answer.quantity;
+    console.log(name, department, price, quantity);
+    connection.query("INSERT INTO products SET ?",
+        {
+          product_name: name,
+          department_name: department,
+          price: price,
+          stock_quantity: quantity
+        },
+        function(err) {
+          if (err) throw err;
+            runSearch();
+        }
+    );
+    // "INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ('Cheez-its', 'food', 1, 564); "
+    });
+}
