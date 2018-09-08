@@ -207,7 +207,7 @@ function addProduct() {
     var department = answer.department;
     var price = answer.price;
     var quantity = answer.quantity;
-    console.log(name, department, price, quantity);
+    console.log("The following product was added to store's inventory: " + name);
     connection.query("INSERT INTO products SET ?",
         {
           product_name: name,
