@@ -74,10 +74,10 @@ function viewProducts() {
 function viewLow() {
     connection.query("SELECT * FROM products", function(err,res) {
         if (err) throw err;
+        var counter = 0;
         for (var i = 0; i < res.length; i++) {
             var inventory = res[i].stock_quantity;
             var product = res[i].product_name;
-            var counter = 0;
             if (inventory < 5) {
                 console.log("You need to order more " + product +". You only have " + inventory + " units left in stock");
                 counter ++;
@@ -162,7 +162,7 @@ function addProduct() {
         type: "input",
         message: "Please enter the Product Name: ",
         // validate: function(value) {
-        //   if (isNaN(value) === false) {
+        //   if (value.length < 0) {
         //     return true;
         //   }
         //   return false;
@@ -173,7 +173,7 @@ function addProduct() {
         type: "input",
         message: "Please enter the Department Name: ",
         // validate: function(value) {
-        //   if (isNaN(value) === false) {
+        //   if (value.length < 0) {
         //     return true;
         //   }
         //   return false;
@@ -183,23 +183,23 @@ function addProduct() {
         name: "price",
         type: "input",
         message: "Please enter the Price of the Product: ",
-        // validate: function(value) {
-        //   if (isNaN(value) === false) {
-        //     return true;
-        //   }
-        //   return false;
-        // }
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
       },
       {
         name: "quantity",
         type: "input",
         message: "Please enter the Inventory Quantity: ",
-        // validate: function(value) {
-        //   if (isNaN(value) === false) {
-        //     return true;
-        //   }
-        //   return false;
-        // }
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
       }
     ])
     .then(function(answer) {
